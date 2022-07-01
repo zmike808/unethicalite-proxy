@@ -2,6 +2,7 @@ package net.unethicalite.proxy.service;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.unethicalite.proxy.api.IsaacCipher;
 import net.unethicalite.proxy.api.Session;
 import net.unethicalite.proxy.repository.SessionRepository;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SessionService {
     private final SessionRepository sessionRepository;
 
@@ -24,6 +26,8 @@ public class SessionService {
         IsaacCipher bufferIsaac = new IsaacCipher(bufferSeed);
 
         sessionRepository.addSession(client.getSessionId(), new Session(writerIsaac, bufferIsaac));
+
+        log.debug("User {} connected", client.getSessionId());
     }
 
     public void disconnect(SocketIOClient client) {

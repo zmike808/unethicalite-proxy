@@ -10,7 +10,7 @@ public class ClanChatMessageListener extends ByteListener {
     private final TextService textService;
 
     public ClanChatMessageListener(TextService textService, SessionService sessionService) {
-        super(sessionService);
+        super(sessionService, 60);
         this.textService = textService;
     }
 
