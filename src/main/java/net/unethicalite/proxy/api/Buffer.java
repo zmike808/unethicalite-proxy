@@ -2,21 +2,24 @@ package net.unethicalite.proxy.api;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.unethicalite.proxy.service.StringService;
+import net.unethicalite.proxy.service.TextService;
 
 import java.math.BigInteger;
 
 public class Buffer {
     @Getter
     protected final byte[] array;
+    @Getter
+    protected final IsaacCipher isaacCipher;
 
     @Setter
     @Getter
     protected int offset;
 
-    public Buffer(byte[] var1) {
+    public Buffer(byte[] var1, IsaacCipher isaacCipher) {
         this.array = var1;
         this.offset = 0;
+        this.isaacCipher = isaacCipher;
     }
 
     public void writeByte(int var1) {
@@ -70,7 +73,7 @@ public class Buffer {
         if (var2 >= 0) {
             throw new IllegalArgumentException("");
         } else {
-            this.offset += StringService.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
+            this.offset += TextService.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
             this.array[++this.offset - 1] = 0;
         }
     }
@@ -81,7 +84,7 @@ public class Buffer {
             throw new IllegalArgumentException("");
         } else {
             this.array[++this.offset - 1] = 0;
-            this.offset += StringService.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
+            this.offset += TextService.encodeStringCp1252(var1, 0, var1.length(), this.array, this.offset);
             this.array[++this.offset - 1] = 0;
         }
     }
@@ -213,7 +216,7 @@ public class Buffer {
         }
 
         int var2 = this.offset - var1 - 1;
-        return var2 == 0 ? "" : StringService.decodeStringCp1252(this.array, var1, var2);
+        return var2 == 0 ? "" : TextService.decodeStringCp1252(this.array, var1, var2);
     }
 
     public String readStringCp1252NullCircumfixed() {
@@ -227,7 +230,7 @@ public class Buffer {
             }
 
             int var3 = this.offset - var2 - 1;
-            return var3 == 0 ? "" : StringService.decodeStringCp1252(this.array, var2, var3);
+            return var3 == 0 ? "" : TextService.decodeStringCp1252(this.array, var2, var3);
         }
     }
 

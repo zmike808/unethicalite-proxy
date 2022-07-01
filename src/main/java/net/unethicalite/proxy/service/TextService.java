@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class StringService {
+public class TextService {
     private static final char[] SPECIAL_CHARACTERS;
 
     private final Huffman huffman;

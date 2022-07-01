@@ -4,8 +4,8 @@ public class PacketBuffer extends Buffer {
     private static final int[] MERSENNE_PRIME;
     private int bitIndex;
 
-    public PacketBuffer(byte[] payload) {
-        super(payload);
+    public PacketBuffer(byte[] payload, IsaacCipher isaacCipher) {
+        super(payload, isaacCipher);
     }
 
     static {
@@ -14,6 +14,19 @@ public class PacketBuffer extends Buffer {
 
     public void importIndex() {
         this.bitIndex = super.offset * 8;
+    }
+
+    public void writeByteIsaac(int var1) {
+        super.array[++super.offset - 1] = ((byte) (var1 + this.isaacCipher.nextInt()));
+    }
+
+    public int readByteIsaac() {
+        return super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255;
+    }
+
+    public int readSmartByteShortIsaac() {
+        int var1 = super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255;
+        return var1 < 128 ? var1 : (var1 - 128 << 8) + (super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255);
     }
 
     public int readBits(int amount) {
